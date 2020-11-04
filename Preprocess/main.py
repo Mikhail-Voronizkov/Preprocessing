@@ -16,6 +16,7 @@ if __name__ == '__main__':
     data = op.read('data.csv')
     
     function = sys.argv[1]
+
     #1
     if (function == 'missing_attribute'):
         print('---------Missing attribute---------')
@@ -70,6 +71,16 @@ if __name__ == '__main__':
 
         method = sys.argv[2]
         op.norminalize(data,method)
+    #8
+    elif (function == 'expression_func'):
+        print('---------Expression---------')
+        if len(sys.argv) < 3:
+            print("To run: `python main.py expression_func expression result_name`")
+            print("WARMING: Must be provided enough argument!\n")
+
+        expression = sys.argv[2]
+        result_name = sys.argv[3]
+        op.expression(data, expression, result_name)
     else:
         print("Unexpected function !!")
 

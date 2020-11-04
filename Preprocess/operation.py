@@ -1,5 +1,6 @@
 import csv
 import math
+import RPN
 
 
 def is_number(str):
@@ -342,6 +343,42 @@ def norminalize(data, method):
     write("normalize.csv", data)
 
     
+# 8
+def expression(data, expression, result_name):
+    result = 0
+    header = data[0]
+    #Add new attribute to header
+    data[0].append(result_name)
+    size = len(data)
+    #Check valid
+    sep = [',','+','-','*','/','(',')',' ']
+    default = sep[0]
+    attributeList = expression
+    for element in sep[1:]:
+        attributeList = attributeList.replace(element,default)
+    attributeList = attributeList.split(default)
+    for a in attributeList:
+        if a == '':
+            continue
+        if a not in header:
+            print('Invalid input: ', a, ' does not exist in dataset')
+            return -1
+    #For each rows
+    for row in range(1,size):
+        #Replace var with value  ex: (x + y)/z -> (2 + 3)/5
+        new_expression = expression
+        for attribute in attributeList:
+            if attribute == '':
+                continue
+            #Missing data or not numeric attribute
+            if (data[row][attribute] == '' or is_number(data[row][attribute]) == False):
+                break
+            #print('data[row][attribute] = ', data[row][attribute])
+            new_expression = new_expression.replace(attribute,data[row][attribute])
+        #Calculate..
+        result = RPN.reverse_polish_notation(new_expression)
+        data[row][result_name] = str(result)
 
-    
+    write('write.csv',data)
+    return 0
         
